@@ -7,8 +7,9 @@
     "ecmaVersion": 6,
     "sourceType": "module"
   },
+  "parser": "babel-eslint",
   "rules": {
     "semi": 2,
-    "max-len": [1, 70, 2, { "ignoreComments": true }]
+    "max-len": [1, 120, 2, { "ignoreComments": true }]
   }
 }
