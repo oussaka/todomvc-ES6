@@ -14,24 +14,30 @@ export default class View {
         this.listContainer = document.querySelector('.todo-list');
         this.mainSection = document.querySelector('.main');
         this.footerSection = document.querySelector('.footer');
+        this.itemsCounter = document.querySelector('.todo-count');
     }
 
     /**
      * add elements to list
      */
     render(items) {
+        this.listContainer.innerHTML = '';
+
         if (items.length > 0) {
             this.mainSection.style.display = 'block';
             this.footerSection.style.display = 'block';
-            this.listContainer.innerHTML = '';
 
             items.map(item => {
                 this.insertItem(item);
             });
+        } else {
+            this.mainSection.style.display = 'none';
+            this.footerSection.style.display = 'none';
         }
     }
 
     insertItem(item) {
+        let itemsLength = this.listContainer.children.length;
         let itemContent = `
             <div class="view">
                 <input class="toggle" type="checkbox">
@@ -44,5 +50,26 @@ export default class View {
         itemContainer.innerHTML = itemContent;
         itemContainer.setAttribute('data-id', item.id);
         this.listContainer.appendChild(itemContainer);
+
+        if (itemsLength === 0) {
+            this.mainSection.style.display = 'block';
+            this.footerSection.style.display = 'block';
+        }
+    }
+
+    /**
+     * Count not complete items left.
+     *
+     * @param {Array} items
+     */
+    counter(items) {
+        let activeItems = 0;
+        activeItems = items.length;
+
+        if (activeItems === 1) {
+            this.itemsCounter.innerHTML = `<strong>${activeItems}</strong> item left`;
+        } else {
+            this.itemsCounter.innerHTML = `<strong>${activeItems}</strong> items left`;
+        }
     }
 }

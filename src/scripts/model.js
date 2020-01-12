@@ -35,7 +35,7 @@ export default class Model {
                 let newItem = {id, title};
                 items.push(newItem);
                 this._updateLocalStorage(items);
-                resolve(newItem);
+                resolve({items, newItem});
             });
         });
     }
@@ -52,7 +52,7 @@ export default class Model {
             if (id) {
                 this.fetchAll().then(items => {
                     let todo = items.filter((item, i) => {
-                        if (item.id === Number(id)) {
+                        if (item.id === id) {
                             items.splice(i, 1);
                             return true;
                         }
@@ -60,7 +60,7 @@ export default class Model {
 
                     if (todo.length === 1) {
                         this._updateLocalStorage(items);
-                        resolve(todo);
+                        resolve();
                     } else {
                         reject('Todo not found.');
                     }

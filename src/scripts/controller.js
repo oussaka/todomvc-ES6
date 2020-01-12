@@ -31,6 +31,7 @@ export default class Controller {
 
     _setView(items) {
         this.view.render(items);
+        this.view.counter(items);
     }
 
     /**
@@ -42,8 +43,10 @@ export default class Controller {
     _insertItem(e) {
         if (e.keyCode === View.KEYBOARD_KEYS.ENTER && e.currentTarget.value !== '') {
             this.model.create(e.currentTarget.value)
-                .then(item => {
-                    this.view.insertItem(item);
+                .then(data => {
+                    this.view.insertItem(data.newItem);
+                    this.view.counter(data.items);
+
                 })
             ;
             e.currentTarget.value = '';
@@ -71,8 +74,6 @@ export default class Controller {
                 .then(() => this.init())
             ;
         }
-
-        return undefined;
     }
 
     /**
