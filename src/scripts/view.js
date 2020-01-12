@@ -34,13 +34,14 @@ export default class View {
         let itemContent = `
             <div class="view">
                 <input class="toggle" type="checkbox">
-                <label>${item}</label>
+                <label>${item.title}</label>
                 <button class="destroy"></button>
             </div>
-            <input class="edit" value="${item}">
+            <input class="edit" value="${item.title}">
         `;
         let itemContainer = document.createElement('li');
         itemContainer.innerHTML = itemContent;
+        itemContainer.setAttribute('data-id', item.id);
         this.listContainer.appendChild(itemContainer);
     }
 }

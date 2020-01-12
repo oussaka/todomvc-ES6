@@ -1,7 +1,9 @@
 import View from './view';
+import Model from './model';
 
 /**
  * Control the behaviour and flow of the app.
+ *
  * @author oussaka
  * @class
  * @exports Controller
@@ -9,21 +11,22 @@ import View from './view';
 export default class Controller {
     constructor() {
         this.view = new View();
-        this.items = [
-            'hello world!',
-            'happy new year 2020',
-            'ES6 tutorial TODO'
-        ];
+        this.model = new Model();
         this._initListeners();
     }
 
     /**
      * Initialize the app to load the initial view and listen to hash changes.
-     * @author oussaka
+     *
      * @public
      */
     init() {
-        this._setView(this.items);
+        this.model.fetchAll()
+        .then(todos => {
+            this._setView(todos);
+        }).catch(error => {
+            console.error(error);
+        });
     }
 
     _setView(items) {
@@ -38,7 +41,11 @@ export default class Controller {
      */
     _insertItem(e) {
         if (e.keyCode === View.KEYBOARD_KEYS.ENTER && e.currentTarget.value !== '') {
-            this.view.insertItem(e.currentTarget.value);
+            this.model.create(e.currentTarget.value)
+                .then(item => {
+                    this.view.insertItem(item);
+                })
+            ;
             e.currentTarget.value = '';
         }
     }
@@ -46,7 +53,6 @@ export default class Controller {
     /**
      * Initialize the listeners and its appropriate handlers.
      *
-     * @author Aleksandar Jovanov <ace92bt@gmail.com>
      * @private
      */
     _initListeners() {
