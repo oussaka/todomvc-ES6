@@ -43,6 +43,35 @@ export default class Model {
     }
 
     /**
+     * Remove a todo from the storage.
+     *
+     * @param {Number} id
+     * @return {Promise} promise
+     * @public
+     */
+    remove(id) {
+        return new Promise((resolve, reject) => {
+            if (id) {
+                this.fetchAll().then(items => {
+                    let todo = items.filter((item, i) => {
+                        if (item.id === Number(id)) {
+                            items.splice(i, 1);
+                            return true;
+                        }
+                    });
+
+                    if (todo.length === 1) {
+                        this._updateLocalStorage(items);
+                        resolve(todo);
+                    } else {
+                        reject('Todo not found.');
+                    }
+                });
+            }
+        });
+    }
+
+    /**
      * Update the local storage.
      *
      * @private

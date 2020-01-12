@@ -23,6 +23,7 @@ export default class View {
         if (items.length > 0) {
             this.mainSection.style.display = 'block';
             this.footerSection.style.display = 'block';
+            this.listContainer.innerHTML = '';
 
             items.map(item => {
                 this.insertItem(item);

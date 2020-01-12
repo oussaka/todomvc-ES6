@@ -51,6 +51,31 @@ export default class Controller {
     }
 
     /**
+     * Handle remove toto from list.
+     *
+     * @param {Event} e
+     * @private
+     */
+    _removeItem(e) {
+        let target = e.target;
+
+        if (target.className === 'destroy') {
+            let itemContainer = target.parentNode;
+
+            while (itemContainer.tagName !== 'LI') {
+                itemContainer = itemContainer.parentNode;
+            }
+
+            let id = itemContainer.getAttribute('data-id');
+            this.model.remove(id)
+                .then(() => this.init())
+            ;
+        }
+
+        return undefined;
+    }
+
+    /**
      * Initialize the listeners and its appropriate handlers.
      *
      * @private
@@ -58,5 +83,8 @@ export default class Controller {
     _initListeners() {
         let input = document.querySelector('.new-todo');
         input.addEventListener('keydown', (event) => this._insertItem(event));
+
+        let destroy = document.querySelector('.todo-list');
+        destroy.addEventListener('click', (event) => this._removeItem(event));
     }
 }
