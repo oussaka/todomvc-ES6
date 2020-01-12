@@ -31,10 +31,8 @@ export default class Model {
     create(title) {
         return this.fetchAll().then(items => {
             return new Promise((resolve, reject) => {
-                let newItem = {
-                    'id': (items)? items.length : 0, // Math.random(),
-                    'title': title
-                };
+                let id = new Date().getTime().toString();
+                let newItem = {id, title};
                 items.push(newItem);
                 this._updateLocalStorage(items);
                 resolve(newItem);
