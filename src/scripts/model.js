@@ -70,6 +70,36 @@ export default class Model {
     }
 
     /**
+     * Update a todo property.
+     *
+     * @param {Number} id
+     * @param {Object} data
+     * @return {Promise} promise
+     * @public
+     */
+    update(id, data) {
+        return new Promise((resolve, reject) => {
+            if (id) {
+                this.fetchAll().then(items => {
+                    let todo = items.filter((item, i) => {
+                        if (item.id === id) {
+                            item[data.key] = data.value;
+                            return item;
+                        }
+                    });
+
+                    if (todo.length === 1) {
+                        this._updateLocalStorage(items);
+                        resolve(todo);
+                    } else {
+                        reject('Todo not found.');
+                    }
+                });
+            }
+        });
+    }
+
+    /**
      * Update the local storage.
      *
      * @private

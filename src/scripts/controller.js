@@ -87,5 +87,16 @@ export default class Controller {
 
         let destroy = document.querySelector('.todo-list');
         destroy.addEventListener('click', (event) => this._removeItem(event));
+
+        let toggle = document.querySelector('.toggle');
+        // destroy.addEventListener('click', (event) => this._toggleItem(event));
+        destroy.addEventListener('click', (event) => {
+            this.view.toggle(event, (id, completed) => {
+                this.model.update(id, {key: 'completed', value: completed})
+                    .then(() => this.init())
+                    .catch(error => console.error(error))
+                ;
+            });
+        });
     }
 }
