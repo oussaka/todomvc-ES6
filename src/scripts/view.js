@@ -56,6 +56,11 @@ export default class View {
         itemContainer.innerHTML = itemContent;
         itemContainer.setAttribute('data-id', item.id);
 
+        if (itemsLength === 0) {
+            this.mainSection.style.display = 'block';
+            this.footerSection.style.display = 'block';
+        }
+
         if (item.completed) {
             let toggle = itemContainer.querySelector('.toggle');
             toggle.setAttribute('checked', true);
