@@ -79,23 +79,30 @@ export default class Model {
      */
     update(id, data) {
         return new Promise((resolve, reject) => {
-            if (id) {
                 this.fetchAll().then(items => {
-                    let todo = items.filter((item, i) => {
-                        if (item.id === id) {
-                            item[data.key] = data.value;
-                            return item;
-                        }
-                    });
+                    if (id) {
+                        let todo = items.filter((item, i) => {
+                            if (item.id === id) {
+                                item[data.key] = data.value;
+                                return item;
+                            }
+                        });
 
-                    if (todo.length === 1) {
-                        this._updateLocalStorage(items);
-                        resolve(todo);
+                        if (todo.length === 1) {
+                            this._updateLocalStorage(items);
+                            resolve(todo);
+                        } else {
+                            reject('Todo not found.');
+                        }
                     } else {
-                        reject('Todo not found.');
+                        items.map((item) => {
+                            item[data.key] = data.value;
+                        });
+
+                        this._updateLocalStorage(items);
+                        resolve();
                     }
                 });
-            }
         });
     }
 

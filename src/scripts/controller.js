@@ -61,7 +61,6 @@ export default class Controller {
      */
     _removeItem(e) {
         let target = e.target;
-
         if (target.className === 'destroy') {
             let itemContainer = target.parentNode;
 
@@ -85,14 +84,22 @@ export default class Controller {
         let input = document.querySelector('.new-todo');
         input.addEventListener('keydown', (event) => this._insertItem(event));
 
-        let destroy = document.querySelector('.todo-list');
-        destroy.addEventListener('click', (event) => this._removeItem(event));
+        let todolist = document.querySelector('.todo-list');
+        todolist.addEventListener('click', (event) => this._removeItem(event));
 
-        let toggle = document.querySelector('.toggle');
-        // destroy.addEventListener('click', (event) => this._toggleItem(event));
-        destroy.addEventListener('click', (event) => {
+        todolist.addEventListener('click', (event) => {
             this.view.toggle(event, (id, completed) => {
                 this.model.update(id, {key: 'completed', value: completed})
+                    .then(() => this.init())
+                    .catch(error => console.error(error))
+                ;
+            });
+        });
+
+        let toggleAll = document.querySelector('.toggle-all');
+        toggleAll.addEventListener('click', (event) => {
+            this.view.toggleAll(event, (completed) => {
+                this.model.update(null, {key: 'completed', value: completed})
                     .then(() => this.init())
                     .catch(error => console.error(error))
                 ;

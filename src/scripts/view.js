@@ -120,4 +120,17 @@ export default class View {
             }
         }
     }
+
+    /**
+     * Handle toggleAll complete toto from list.
+     *
+     * @param {Event} e
+     * @param {Function} callback
+     * @public
+     */
+    toggleAll(e, callback) {
+        let checkedAll = e.target;
+        callback(checkedAll.checked);
+    }
 }
+
