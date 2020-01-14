@@ -1,4 +1,3 @@
-
 export default class View {
 
     /**
@@ -21,7 +20,7 @@ export default class View {
     /**
      * add elements to list
      */
-    render(items) {
+    render(items, data) {
         this.listContainer.innerHTML = '';
         let completedItems = 0;
 
@@ -29,12 +28,15 @@ export default class View {
             this.mainSection.style.display = 'block';
             this.footerSection.style.display = 'block';
 
-            items.map(item => {
+            items.filter(item => {
+                return !((data.view === 'active' && item.completed) || (data.view === 'completed' && !item.completed));
+            }).map(item => {
                 this.insertItem(item);
                 if (item.completed) {
                     completedItems++;
                 }
             });
+
             this.toggleAllCheck.checked = completedItems === items.length;
         } else {
             this.mainSection.style.display = 'none';
@@ -131,6 +133,27 @@ export default class View {
     toggleAll(e, callback) {
         let checkedAll = e.target;
         callback(checkedAll.checked);
+    }
+
+    /**
+     * Handle toggleAll complete toto from list.
+     *
+     * @param {Event} e
+     * @public
+     */
+    filter(e) {
+        let target = e.target;
+        if (target.tagName === 'A') {
+            let filterContainer = target.parentNode;
+
+            while (filterContainer.tagName !== 'UL') {
+                filterContainer = filterContainer.parentNode;
+            }
+
+            let currentFilter = filterContainer.querySelector('a.selected');
+            currentFilter.classList.toggle('selected');
+            target.className = 'selected';
+        }
     }
 }
 

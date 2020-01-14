@@ -2,6 +2,12 @@ import View from './view';
 import Model from './model';
 
 /**
+ * @constant
+ * @type {String}
+ */
+const ALLOWED_VIEWS = 'all|active|completed';
+
+/**
  * Control the behaviour and flow of the app.
  *
  * @author oussaka
@@ -21,17 +27,27 @@ export default class Controller {
      * @public
      */
     init() {
+        let currentView = 'all';
+        if (window.location.hash) {
+            currentView = window.location.hash.substr(2);
+        }
+
         this.model.fetchAll()
         .then(todos => {
-            this._setView(todos);
+            this._setView(todos, currentView);
         }).catch(error => {
             console.error(error);
         });
     }
 
-    _setView(items) {
-        this.view.render(items);
-        this.view.counter(items);
+    _setView(items, view = 'all') {
+        if (view && ALLOWED_VIEWS.includes(view)) {
+            this.view.render(items, {view});
+            this.view.counter(items);
+        } else {
+            window.location.hash = '#/';
+            this._setView(items, 'all');
+        }
     }
 
     /**
@@ -105,5 +121,10 @@ export default class Controller {
                 ;
             });
         });
+
+        let filterSelected = document.querySelector('.filters');
+        filterSelected.addEventListener('click', (event) => this.view.filter(event));
+
+        window.addEventListener('hashchange', () => this.init());
     }
 }
