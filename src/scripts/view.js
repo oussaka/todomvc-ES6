@@ -1,13 +1,13 @@
-export default class View {
+/**
+ * @constant
+ * @type {Object}
+ */
+const KEYBOARD_KEYS = {
+    ENTER: 13,
+    ESC: 27
+};
 
-    /**
-     * @constant
-     * @type {Object}
-     */
-    static KEYBOARD_KEYS = {
-        ENTER: 13,
-        ESC: 27
-    };
+export default class View {
 
     constructor() {
         this.listContainer = document.querySelector('.todo-list');
@@ -65,7 +65,7 @@ export default class View {
 
         if (item.completed) {
             let toggle = itemContainer.querySelector('.toggle');
-            toggle.setAttribute('checked', true);
+            toggle.setAttribute('checked', 'true');
             itemContainer.className = 'completed';
         }
 
@@ -154,6 +154,76 @@ export default class View {
             currentFilter.classList.toggle('selected');
             target.className = 'selected';
         }
+    }
+
+    /**
+     * Handle edit toto from list.
+     *
+     * @param {Event} e
+     * @param {Function} callback
+     * @public
+     */
+    edit(e, callback) {
+        let target = e.target;
+        if (target.tagName === 'LABEL') {
+            let itemContainer = target.parentNode;
+
+            while (itemContainer.tagName !== 'LI') {
+                itemContainer = itemContainer.parentNode;
+            }
+
+            let id = itemContainer.getAttribute('data-id');
+            callback(id);
+        }
+    }
+
+    /**
+     * Transform todo to an editable field.
+     *
+     * @param {Number} id
+     * @public
+     */
+    editableTodo(id) {
+        let itemContainer = document.querySelector(`li[data-id="${id}"]`);
+        let itemEditContainer = itemContainer.querySelector('.edit');
+        itemContainer.classList.add('editing');
+        itemEditContainer.focus();
+
+        // Set caret position to the end of the input field.
+        let length = itemEditContainer.value.length;
+        itemEditContainer.setSelectionRange(length, length);
+    }
+
+    /**
+     * Handle update toto.
+     *
+     * @param {Number} id
+     * @param {Function} callback
+     * @public
+     */
+    save(id, callback) {
+        let itemContainer = document.querySelector(`li[data-id="${id}"]`);
+        let itemEditContainer = itemContainer.querySelector('.edit');
+        let originalValue = itemEditContainer.value;
+
+        let _handleEditCallback = (event) => {
+            let inputValue = itemEditContainer.value.trim();
+
+            if (event.keyCode === KEYBOARD_KEYS.ENTER || event.type === 'blur') {
+                if (inputValue !== '') {
+                    callback(id, 'save', inputValue);
+                    itemContainer.classList.remove('editing');
+                } else {
+                    callback(id, 'remove', inputValue);
+                }
+            } else if (event.keyCode === KEYBOARD_KEYS.ESC) {
+                itemContainer.classList.remove('editing');
+                itemEditContainer.value = originalValue;
+            }
+        };
+
+        itemEditContainer.addEventListener('keydown', _handleEditCallback);
+        itemEditContainer.addEventListener('blur', _handleEditCallback);
     }
 }
 

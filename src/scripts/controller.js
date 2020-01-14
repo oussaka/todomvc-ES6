@@ -102,6 +102,23 @@ export default class Controller {
 
         let todolist = document.querySelector('.todo-list');
         todolist.addEventListener('click', (event) => this._removeItem(event));
+        todolist.addEventListener('dblclick', (event) => {
+            this.view.edit(event, (id) => {
+                this.view.editableTodo(id);
+                this.view.save(id, (id, action, data) => {
+                    if (action === 'save') {
+                        this.model.update(id, {key: 'title', value: data})
+                            .then(() => this.init())
+                            .catch(error => console.error(error))
+                        ;
+                    } else if (action === 'remove') {
+                        this.model.remove(id)
+                            .then(() => this.init())
+                        ;
+                    }
+                });
+            });
+        });
 
         todolist.addEventListener('click', (event) => {
             this.view.toggle(event, (id, completed) => {
