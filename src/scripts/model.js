@@ -1,6 +1,10 @@
 export default class Model {
-    constructor() {
-        this.storageId = 'todos-es6';
+
+    /**
+     * @param {!string} name Database name
+     */
+    constructor(name) {
+        this.storageId = name;
         this.storage = window.localStorage;
     }
 

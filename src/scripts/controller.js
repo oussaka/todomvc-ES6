@@ -15,9 +15,9 @@ const ALLOWED_VIEWS = 'all|active|completed';
  * @exports Controller
  */
 export default class Controller {
-    constructor() {
-        this.view = new View();
-        this.model = new Model();
+    constructor(model, view) {
+        this.view = view;
+        this.model = model;
         this._initListeners();
     }
 
