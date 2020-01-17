@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "A light foundation for your next frontend project based on webpack.",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js  --colors",
-    "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js"
+    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js --colors",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack/webpack.config.dev.js",
+    "start": "node server.js",
+    "clean": "rm -rf build && mkdir build"
   },
   "repository": {
     "type": "git",
@@ -33,13 +35,14 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^6.0.3",
-    "css-loader": "^3.4.0",
+    "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
     "eslint-loader": "^3.0.3",
+    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^4.3.0",
     "html-webpack-plugin": "^4.0.0-beta.11",
     "mini-css-extract-plugin": "^0.8.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.1.1",
     "webpack": "^4.41.4",
@@ -48,9 +51,11 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "todomvc-app-css": "^2.3.0",
-    "todomvc-common": "^1.0.5",
     "@babel/polyfill": "^7.7.0",
-    "core-js": "^3.6.0"
+    "core-js": "^3.6.0",
+    "dont-sniff-mimetype": "^1.1.0",
+    "express": "^4.17.1",
+    "todomvc-app-css": "^2.3.0",
+    "todomvc-common": "^1.0.5"
   }
 }
