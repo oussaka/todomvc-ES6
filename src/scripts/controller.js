@@ -1,5 +1,4 @@
 import View from './view';
-import Model from './model';
 
 /**
  * @constant
@@ -62,7 +61,6 @@ export default class Controller {
                 .then(data => {
                     this.view.insertItem(data.newItem);
                     this.view.counter(data.items);
-
                 })
             ;
             e.currentTarget.value = '';

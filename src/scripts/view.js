@@ -225,5 +225,8 @@ export default class View {
         itemEditContainer.addEventListener('keydown', _handleEditCallback);
         itemEditContainer.addEventListener('blur', _handleEditCallback);
     }
-}
 
+    static get KEYBOARD_KEYS() {
+        return KEYBOARD_KEYS;
+    }
+}
